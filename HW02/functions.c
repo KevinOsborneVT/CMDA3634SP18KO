@@ -6,9 +6,54 @@
 
 #include "functions.h"
 
-//compute a*b mod p safely
+//compute a*b mod p safely  ****Must input b as a vector of binary coefficients for base 2******
 unsigned int modprod(unsigned int a, unsigned int b, unsigned int p) {
-  /* Q1.2: Complete this function */
+  #include <stdio.h>
+
+int za = a;
+int ab = 0;
+int newB, n, rem, bin, temp2, temp3, oneOrZero = 0, temp1 = 1;
+  
+  //Here we put b into binary form.  I used "http://www.sanfoundry.com/c-program-decimal-binary-count-1-binary/" for help on this concept.
+  while (b>0){
+    rem = b % 2;
+    oneOrZero = oneOrZero + rem*temp1;
+    b = b/2;
+    temp1 = temp1*10;
+  }
+  
+  newB = oneOrZero;
+  
+  //Stack exchange helped me with finding the length of an integer
+  n = floor(log10(abs(newB))) + 1;
+  
+//Now, in the for loop we need to be able to read the binary version of b digit by digit.  
+//I used https://qnaplus.com/c-program-get-digit-position-number/ for help on this.
+
+for (i = n; i > 0; --i){
+  
+temp2 = pow(10,n+1);
+  
+  bin = newB%temp2;
+  
+  if (n>0) {
+    temp3 = pow(10,n);
+    bin = bin/temp3;
+  }
+  
+	if (bin == 1){
+		
+		ab  = (za + ab)%p;
+	}
+	
+	za = (2*za)%p;
+	
+	}
+
+
+
+
+return ab;
 }
 
 //compute a^b mod p safely
