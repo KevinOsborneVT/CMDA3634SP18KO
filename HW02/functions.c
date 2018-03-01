@@ -11,46 +11,46 @@ unsigned int modprod(unsigned int a, unsigned int b, unsigned int p) {
   #include <stdio.h>
 
 int za = a;
-int ab = 0;
-int newB, n, rem, bin, i, temp2, temp3, oneOrZero = 0, temp1 = 1;
-  
-  //Here we put b into binary form.  I used "http://www.sanfoundry.com/c-program-decimal-binary-count-1-binary/" for help on this concept.
-  while (b>0){
-    rem = b % 2;
-    oneOrZero = oneOrZero + rem*temp1;
-    b = b/2;
-    temp1 = temp1*10;
-  }
-  
-  newB = oneOrZero;
-  
-  //Stack exchange helped me with finding the length of an integer
-  n = floor(log10(abs(newB))) + 1;
-  
-//Now, in the for loop we need to be able to read the binary version of b digit by digit.  
-//I used https://qnaplus.com/c-program-get-digit-position-number/ for help on this.
+	int ab = 0;
+	int newB, i,  n, rem, bin, temp2, temp3, oneOrZero = 0, temp1 = 1;
+	  
+	  //Here we put b into binary form.  I used "http://www.sanfoundry.com/c-program-decimal-binary-count-1-binary/" for help on this concept.
+	  while (b>0){
+	    rem = b % 2;
+	    oneOrZero = oneOrZero + rem*temp1;
+	    b = b/2;
+	    temp1 = temp1*10;
+	  }
+	  
+	  newB = oneOrZero;
 
-for (i = n; i > 0; --i){
-  
-temp2 = pow(10,n+1);
-  
-  bin = newB%temp2;
-  
-  if (n>0) {
-    temp3 = pow(10,n);
-    bin = bin/temp3;
-  }
-  
-	if (bin == 1){
+	  //Stack exchange helped me with finding the length of an integer
+	  n = floor(log10(abs(newB))) + 1;
+	
+	
+	//Now, in the for loop we need to be able to read the binary version of b digit by digit.  
+	//I used https://qnaplus.com/c-program-get-digit-position-number/ for help on this.
+	
+	for (i = 0; i < n; ++i){
+	
+	temp2 = pow(10,i+1);
+	  
+	  bin = newB%temp2;
+	  
+	  if (i>0) {
+	    temp3 = pow(10,i);
+	    bin = bin/temp3;
+	  }
 		
-		ab  = (za + ab)%p;
-	}
+		if (bin == 1){
+			
+			ab  = (za + ab)%p;
+		}
+		
+		za = (2*za)%p;
+		
+		}
 	
-	za = (2*za)%p;
-	
-	}
-
-
 
 
 return ab;
@@ -58,8 +58,57 @@ return ab;
 
 //compute a^b mod p safely
 unsigned int modExp(unsigned int a, unsigned int b, unsigned int p) {
-  /* Q1.3: Complete this function */
+  
+	 #include <stdio.h>
+
+	int z = a;
+	int aExpb = 1;
+	
+	int newB, i,  n, rem, bin, temp2, temp3, oneOrZero = 0, temp1 = 1;
+	  
+	  //Here we put b into binary form.  I used "http://www.sanfoundry.com/c-program-decimal-binary-count-1-binary/" for help on this concept.
+	  while (b>0){
+	    rem = b % 2;
+	    oneOrZero = oneOrZero + rem*temp1;
+	    b = b/2;
+	    temp1 = temp1*10;
+	  }
+	  
+	  newB = oneOrZero;
+
+	  //Stack exchange helped me with finding the length of an integer
+	  n = floor(log10(abs(newB))) + 1;
+	
+	
+	//Now, in the for loop we need to be able to read the binary version of b digit by digit.  
+	//I used https://qnaplus.com/c-program-get-digit-position-number/ for help on this.
+	
+	for (i = 0; i < n; ++i){
+	
+	temp2 = pow(10,i+1);
+	  
+	  bin = newB%temp2;
+	  
+	  if (i>0) {
+	    temp3 = pow(10,i);
+	    bin = bin/temp3;
+	  }
+		
+		if (bin == 1){
+			
+			aExpb  = modProd(aExpb, z, p);
+		}
+		
+		z = modProd(z, z, p);
+		
+		}
+	
+
+
+return aExpB;
 }
+	
+
 
 //returns either 0 or 1 randomly
 unsigned int randomBit() {
@@ -112,6 +161,47 @@ unsigned int isProbablyPrime(unsigned int N) {
   //if we're testing a large number switch to Miller-Rabin primality test
   /* Q2.1: Complete this part of the isProbablyPrime function using the Miller-Rabin pseudo-code */
   unsigned int r,d;
+	int q, m, temp;
+	
+	
+	
+	for (q = 1; q <N; q++){
+		temp = (N-1)%q;
+		if (temp == 0){
+			for (m = 0; m < 33; m++){
+				if (((N-1)/q - pow(2,m)) == 0){
+					
+					r = m;
+					d = q;
+					break;
+				}
+			}
+		}
+	}
+	
+//Miller-Rabin test
+	int k, j, x;
+	
+for (k = 0; k < NsmallPrimes; k++){
+	x = modExp(smallPrimeList[k],d,N);
+	
+	if (x == 1 && x == N-1) {
+		continue;
+	}
+	
+	for (k  = 1;  k < r; k++) {
+		x = modProd(x,x,N);
+		if (x == 1){
+			return false;
+		}
+	if (x == N-1){
+		continue;
+	}
+	return false;
+	}
+	
+return true;
+}
 
   for (unsigned int n=0;n<NsmallPrimes;n++) {
   
