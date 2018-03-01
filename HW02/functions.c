@@ -12,7 +12,7 @@ unsigned int modprod(unsigned int a, unsigned int b, unsigned int p) {
 
 int za = a;
 int ab = 0;
-int newB, n, rem, bin, temp2, temp3, oneOrZero = 0, temp1 = 1;
+int newB, n, rem, bin, i, temp2, temp3, oneOrZero = 0, temp1 = 1;
   
   //Here we put b into binary form.  I used "http://www.sanfoundry.com/c-program-decimal-binary-count-1-binary/" for help on this concept.
   while (b>0){
